@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ crop.crop_name }} Bids - GaonGrid{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+
+    <!-- Back Button -->
+    <a href="{% url 'sell_crops' %}" class="text-xs font-bold text-emerald-800 hover:underline inline-block">
+        &larr; Back to all crop listings
+    </a>
+
+    <!-- Crop Summary Card -->
+    <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+            <span class="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded uppercase">Farmer Lot</span>
+            <h1 class="text-2xl font-extrabold text-stone-900 mt-1">{{ crop.crop_name }} ({{ crop.variety }})</h1>
+            <p class="text-xs text-stone-500 mt-0.5">Farmer: {{ crop.farmer_name }} • {{ crop.location }}</p>
+        </div>
+
+        <div class="text-right bg-stone-50 p-3.5 rounded-xl border border-stone-200">
+            <span class="text-xs text-stone-500 block">Total Lot Size:</span>
+            <span class="text-lg font-bold text-stone-900">{{ crop.quantity_quintal }} Quintals</span>
+            <span class="text-xs text-stone-600 block mt-0.5">Target: ₹{{ crop.expected_price_per_quintal }} / Q</span>
+        </div>
+    </div>
+
+    <!-- Live Competing Bids -->
+    <div class="space-y-3">
+        <h2 class="text-lg font-bold text-stone-900">Direct Buyer Offers Received ({{ bids.count }})</h2>
+
+        {% if bids %}
+            {% for bid in bids %}
+            <div class="bg-white p-5 rounded-2xl border {% if bid.is_accepted %}border-emerald-600 bg-emerald-50/50{% else %}border-stone-200{% endif %} shadow-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h3 class="text-base font-bold text-stone-900">{{ bid.company_name }}</h3>
+                        <span class="text-xs text-stone-500">({{ bid.buyer_name }})</span>
+                        {% if bid.is_accepted %}
+                        <span class="px-2 py-0.5 bg-emerald-600 text-white text-xs font-bold rounded">ACCEPTED DEAL</span>
+                        {% endif %}
+                    </div>
+                    <p class="text-xs text-stone-500 mt-1">Distance: {{ bid.distance_km }} km away • Terms: {{ bid.payment_terms }}</p>
+                    {% if bid.free_pickup %}
+                    <span class="inline-block text-[11px] font-bold text-emerald-800 mt-1">✓ Free Barn Pickup Included</span>
+                    {% endif %}
+                </div>
+
+                <div class="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
+                    <div class="text-right">
+                        <span class="text-xl font-extrabold text-stone-900">₹{{ bid.offered_price_per_quintal }}</span>
+                        <span class="text-xs text-stone-500 block">/ Quintal</span>
+                        <span class="text-xs font-bold text-emerald-700 block">Total: ₹{{ bid.total_payout }}</span>
+                    </div>
+
+                    {% if not crop.status == 'Sold' and not bid.is_accepted %}
+                    <a href="{% url 'accept_bid' bid_id=bid.id %}" class="px-4 py-2.5 bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow cursor-pointer">
+                        Accept Deal &rarr;
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="p-6 bg-white rounded-xl border border-stone-200 text-center text-stone-500 text-sm">
+                No buyer bids received yet.
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

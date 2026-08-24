@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}GaonGrid - Sell Direct, Buy Smart{% endblock %}
+
+{% block content %}
+<div class="space-y-10">
+
+    <!-- Hero Section -->
+    <div class="text-center max-w-3xl mx-auto py-6">
+        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-900 font-bold text-xs rounded-full mb-3">
+            🌾 Direct Kisan Portal (No Middlemen)
+        </span>
+        <h1 class="text-4xl font-extrabold text-stone-900 tracking-tight">
+            Sell Direct. Buy Smart. Grow Better.
+        </h1>
+        <p class="text-stone-600 mt-3 text-base">
+            Simple, honest agricultural platform connecting farmers directly to flour mills, verified traders, and fertilizer dealers.
+        </p>
+
+        <div class="flex items-center justify-center gap-4 mt-6">
+            <a href="{% url 'sell_crops' %}" class="px-6 py-3 bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl shadow">
+                🌾 Sell My Crops (List Lot)
+            </a>
+            <a href="{% url 'fertilizers' %}" class="px-6 py-3 bg-white hover:bg-stone-100 text-stone-800 border border-stone-300 font-bold text-sm rounded-xl shadow-xs">
+                🧪 Check Subsidized Fertilizers
+            </a>
+        </div>
+    </div>
+
+    <!-- Quick Action Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm text-left">
+            <div class="text-3xl mb-2">🌾</div>
+            <h3 class="text-lg font-bold text-stone-900">Direct Crop Sale</h3>
+            <p class="text-xs text-stone-600 mt-1 mb-4">
+                List your wheat, paddy, or mustard. Receive live competing bids from nearby verified millers.
+            </p>
+            <a href="{% url 'sell_crops' %}" class="text-xs font-bold text-emerald-800 hover:underline">
+                List Crop Lot &rarr;
+            </a>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm text-left">
+            <div class="text-3xl mb-2">🧪</div>
+            <h3 class="text-lg font-bold text-stone-900">Fertilizer Rates & Stock</h3>
+            <p class="text-xs text-stone-600 mt-1 mb-4">
+                Check official DBT subsidized Urea, DAP, and Potash prices at authorized dealers.
+            </p>
+            <a href="{% url 'fertilizers' %}" class="text-xs font-bold text-emerald-800 hover:underline">
+                Find Dealer Stock &rarr;
+            </a>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm text-left">
+            <div class="text-3xl mb-2">♻️</div>
+            <h3 class="text-lg font-bold text-stone-900">Crop Residue Monetization</h3>
+            <p class="text-xs text-stone-600 mt-1 mb-4">
+                Don't burn stubble. Sell parali/bhusa directly to bio-energy plants at ₹1,800/Ton.
+            </p>
+            <a href="{% url 'residue' %}" class="text-xs font-bold text-emerald-800 hover:underline">
+                Sell Crop Stubble &rarr;
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

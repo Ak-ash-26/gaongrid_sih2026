@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Monetize Crop Residue - GaonGrid{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+    <!-- Left: Form -->
+    <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
+        <span class="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded uppercase">Don't Burn Stubble</span>
+        <h2 class="text-xl font-bold text-stone-900 mt-2 mb-1">Sell Crop Residue (Parali / Bhusa)</h2>
+        <p class="text-xs text-stone-500 mb-4">Connect with bio-pellet factories & power plants paying ₹1,800 / Ton with field pickup.</p>
+
+        <form method="POST" class="space-y-3">
+            {% csrf_token %}
+            <div>
+                <label class="block text-xs font-bold text-stone-700 mb-1">Farmer Name:</label>
+                {{ form.farmer_name }}
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-stone-700 mb-1">Phone Number:</label>
+                {{ form.phone }}
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-stone-700 mb-1">Village / Location:</label>
+                {{ form.location }}
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-stone-700 mb-1">Residue / Crop Type:</label>
+                {{ form.crop_type }}
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-stone-700 mb-1">Estimated Quantity (Tons):</label>
+                {{ form.quantity_tons }}
+                <span class="text-[11px] text-stone-500 mt-1 block">Type approximate tons (1 acre paddy is approx 2-3 tons).</span>
+            </div>
+
+            <button type="submit" class="w-full py-3 bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl mt-4 cursor-pointer">
+                Book Residue Pickup &rarr;
+            </button>
+        </form>
+    </div>
+
+    <!-- Right: Residue Calculator & Buyer Listings -->
+    <div class="lg:col-span-7 space-y-6">
+
+        <!-- Calculator Form -->
+        <div class="bg-stone-900 text-white p-6 rounded-2xl">
+            <h3 class="text-base font-bold text-emerald-400">💡 Residue Income Estimator</h3>
+            <p class="text-xs text-stone-400 mt-1 mb-4">See how much you earn instead of burning:</p>
+
+            <form method="GET" class="flex gap-3 items-center">
+                <input type="number" name="tons" value="{{ tons_input }}" min="1" max="100" class="px-3 py-2 bg-stone-800 text-white border border-stone-700 rounded-lg text-sm w-36">
+                <span class="text-xs text-stone-300">Metric Tons</span>
+                <button type="submit" class="px-4 py-2 bg-emerald-700 text-white font-bold text-xs rounded-lg">Calculate</button>
+            </form>
+
+            <div class="grid grid-cols-2 gap-4 mt-5 pt-4 border-t border-stone-800">
+                <div>
+                    <span class="text-[10px] uppercase text-stone-400 block font-semibold">Estimated Net Income</span>
+                    <span class="text-2xl font-extrabold text-amber-300">₹{{ estimated_earnings }}</span>
+                </div>
+                <div>
+                    <span class="text-[10px] uppercase text-stone-400 block font-semibold">CO₂ Emissions Prevented</span>
+                    <span class="text-2xl font-extrabold text-emerald-400">{{ co2_saved }} Tons</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Residue Pickups -->
+        <div class="space-y-3">
+            <h3 class="text-base font-bold text-stone-900">Recent Residue Pickups in District</h3>
+            {% for item in listings %}
+            <div class="bg-white p-4 rounded-xl border border-stone-200 flex justify-between items-center text-xs">
+                <div>
+                    <strong class="text-stone-900 text-sm block">{{ item.crop_type }}</strong>
+                    <span class="text-stone-500">{{ item.farmer_name }} • {{ item.location }}</span>
+                </div>
+                <div class="text-right">
+                    <span class="font-bold text-stone-900 block text-sm">{{ item.quantity_tons }} Tons</span>
+                    <span class="text-emerald-700 font-semibold">₹{{ item.estimated_income }}</span>
+                </div>
+            </div>
+            {% empty %}
+            <div class="p-4 bg-white rounded-xl border border-stone-200 text-stone-500 text-center text-xs">
+                No listings submitted yet.
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
